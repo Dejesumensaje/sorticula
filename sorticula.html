@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta Sitio Web - Sortícula</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Georgia:ital,wght@0,400;0,700;1,400&display=swap">
+    <style>
+        body {
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Roboto', sans-serif;
+            color: #222;
+            line-height: 1.3;
+        }
+        
+        h1 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 0;
+            font-weight: 700;
+            color: #7048ec;
+        }
+        
+        h2 {
+            font-size: 22px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #7048ec;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            margin-bottom: 1.2em;
+        }
+        
+        ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 400;
+            margin-top: 5px;
+            margin-bottom: 40px;
+            font-family: 'Roboto', sans-serif;
+            color: #666;
+        }
+        
+        .divider {
+            height: 3px;
+            width: 60px;
+            background-color: #7048ec;
+            margin: 0 auto 40px;
+        }
+        
+        .highlight {
+            background-color: #f9f5ff;
+            border-left: 3px solid #7048ec;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        
+        .card-title {
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #444;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .phase-title {
+            font-weight: 500;
+            margin: 0;
+            color: #444;
+        }
+        
+        .phase-price {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            color: #7048ec;
+        }
+        
+        @media print {
+            body {
+                font-size: 12px;
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 18px;
+                margin-top: 30px;
+            }
+            
+            h3 {
+                font-size: 15px;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            .divider {
+                margin-bottom: 30px;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background-color: #f5f5f5;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            color: #444;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .total-row {
+            font-weight: bold;
+            background-color: #f9f5ff;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 0;
+            margin: 30px 0;
+            list-style: none;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #e0e0e0;
+            left: 50px;
+            margin-left: -1.5px;
+        }
+        
+        .timeline > li {
+            position: relative;
+            margin-bottom: 40px;
+            min-height: 50px;
+            padding-left: 70px;
+        }
+        
+        .timeline > li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-size: 1.4em;
+            color: #fff;
+            background: #7048ec;
+            z-index: 1;
+        }
+        
+        .timeline-panel {
+            padding: 20px;
+            position: relative;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            background: #fff;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .timeline-panel:before {
+            position: absolute;
+            top: 15px;
+            left: -15px;
+            right: auto;
+            display: inline-block;
+            border-top: 15px solid transparent;
+            border-right: 15px solid #e0e0e0;
+            border-left: 0 solid #e0e0e0;
+            border-bottom: 15px solid transparent;
+            content: " ";
+        }
+        
+        .timeline-panel:after {
+            position: absolute;
+            top: 16px;
+            left: -14px;
+            right: auto;
+            display: inline-block;
+            border-top: 14px solid transparent;
+            border-right: 14px solid #fff;
+            border-left: 0 solid #fff;
+            border-bottom: 14px solid transparent;
+            content: " ";
+        }
+        
+        .timeline-badge.phase1 {
+            background-color: #7048ec;
+        }
+        
+        .timeline-badge.phase2 {
+            background-color: #d9d537;
+        }
+        
+        .timeline-badge.phase3 {
+            background-color: #3245ba;
+        }
+        
+        .timeline-badge.phase4 {
+            background-color: #df411b;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        
+        .timeline-title {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .timeline-price {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            color: #7048ec;
+        }
+        
+        .timeline-subtitle {
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sortícula</h1>
+        <p class="subtitle">Propuesta Sitio Web</p>
+    </header>
+
+    <section>
+        <h2>1. Introducción</h2>
+        <p>
+            Esta propuesta detalla el proceso de desarrollo del sitio web de Sortícula, un espacio digital que capturará 
+            la esencia artesanal y filosófica de este taller de joyería independiente.
+        </p>
+        
+        <div class="highlight">
+            <p>
+                El sitio se diseñará como un <strong>lienzo minimalista</strong> donde las fotografías de las piezas y talleres 
+                serán las protagonistas, complementadas con elementos visuales y microinteracciones que refuercen las acciones principales: 
+                la reserva de talleres y la solicitud de joyas personalizadas.
+            </p>
+        </div>
+        
+        <p>
+            Entendemos que para Sortícula, cada joya es "el destino transitado de los elementos" y que "el tiempo en una joya y su destino eres tú". 
+            Nuestro objetivo es plasmar esta filosofía de "la magia de los detalles" en una experiencia digital que invite 
+            a los visitantes a descubrir y participar en sus talleres.
+        </p>
+    </section>
+
+    <section>
+        <h2>2. Enfoque y Tecnologías</h2>
+        <p>
+            Para crear un sitio que refleje fielmente la identidad y valores de Sortícula, utilizaremos las siguientes 
+            tecnologías seleccionadas por su rendimiento, flexibilidad y capacidad para destacar el contenido visual:
+        </p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3 class="card-title">WordPress + Astra Pro</h3>
+                <p>
+                    Plataforma robusta con un tema ligero y elegante que permitirá destacar las fotografías de las joyas 
+                    y dar protagonismo al concepto minimalista que define a Sortícula.
+                </p>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">Elementor Pro</h3>
+                <p>
+                    Constructor visual que facilitará actualizaciones futuras, permitiéndoles ajustar el contenido sin 
+                    depender de un desarrollador, manteniendo siempre la coherencia visual.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 class="card-title">WooCommerce para Reserva de Talleres</h3>
+            <p>
+                Implementaremos WooCommerce como sistema de gestión de reservas y pagos. Esta solución permitirá a los 
+                visitantes reservar sus plazas en los talleres, seleccionar fechas disponibles, y realizar el pago de manera 
+                segura, todo integrado perfectamente con el sistema de administración del sitio.
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <h2>3. Proceso de Desarrollo</h2>
+        
+        <p>
+            El proyecto se desarrollará en 14 semanas (3.5 meses), siguiendo un enfoque que prioriza la entrega 
+            temprana de valor con un MVP funcional a mitad del proceso, permitiéndoles tener presencia online mientras 
+            completamos el desarrollo de todas las funcionalidades.
+        </p>
+        
+        <ul class="timeline">
+            <li>
+                <div class="timeline-badge phase1">1</div>
+                <div class="timeline-panel">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Definición y Planificación</h3>
+                        <span class="timeline-price">$1,000,000</span>
+                    </div>
+                    <p class="timeline-subtitle">Semanas 1-2: Asentando las bases</p>
+                    <ul>
+                        <li>Investigación de referentes en joyería artesanal</li>
+                        <li>Definición de estructura centrada en la experiencia de reserva</li>
+                        <li>Mapeo del recorrido del usuario alineado con la narrativa de Sortícula</li>
+                        <li>Especificaciones técnicas y funcionales detalladas</li>
+                    </ul>
+                    <p><strong>Entregable:</strong> Documento de especificaciones y wireframes</p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="timeline-badge phase2">2</div>
+                <div class="timeline-panel">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Diseño y MVP</h3>
+                        <span class="timeline-price">$2,500,000</span>
+                    </div>
+                    <p class="timeline-subtitle">Semanas 3-7: Materialización visual y primera versión funcional</p>
+                    <ul>
+                        <li>Diseño visual completo alineado con la identidad de Sortícula</li>
+                        <li>Implementación del diseño para páginas principales</li>
+                        <li>Desarrollo de funcionalidades básicas de presentación</li>
+                        <li>Configuración de WordPress, Astra Pro y Elementor</li>
+                    </ul>
+                    <p><strong>Entregable:</strong> Sitio MVP funcional que les permitirá comenzar a tener presencia online</p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="timeline-badge phase3">3</div>
+                <div class="timeline-panel">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Desarrollo Completo</h3>
+                        <span class="timeline-price">$2,500,000</span>
+                    </div>
+                    <p class="timeline-subtitle">Semanas 8-12: Implementación de todas las funcionalidades</p>
+                    <ul>
+                        <li>Integración de WooCommerce para reserva de talleres</li>
+                        <li>Configuración del calendario de disponibilidad</li>
+                        <li>Desarrollo de formularios personalizados para joyas a pedido</li>
+                        <li>Implementación completa de todas las secciones</li>
+                        <li>Integración con redes sociales y otros canales</li>
+                    </ul>
+                    <p><strong>Entregable:</strong> Sistema completo de reservas y todas las funcionalidades implementadas</p>
+                </div>
+            </li>
+            
+            <li>
+                <div class="timeline-badge phase4">4</div>
+                <div class="timeline-panel">
+                    <div class="timeline-header">
+                        <h3 class="timeline-title">Optimización y Finalización</h3>
+                        <span class="timeline-price">$1,000,000</span>
+                    </div>
+                    <p class="timeline-subtitle">Semanas 13-14: Puliendo la experiencia</p>
+                    <ul>
+                        <li>Análisis del MVP en producción y refinamiento basado en datos reales</li>
+                        <li>Optimización SEO completa orientada a talleres de joyería</li>
+                        <li>Pruebas exhaustivas de todas las integraciones</li>
+                        <li>Capacitación para la gestión del contenido y sistema de reservas</li>
+                    </ul>
+                    <p><strong>Entregable:</strong> Sitio web completo, optimizado y listo para crecer</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <div class="page-break"></div>
+
+    <section>
+        <h2>4. Funcionalidades Principales</h2>
+        
+        
+        <div class="card">
+            <h3 class="card-title">Sistema de Reserva de Talleres</h3>
+            <div class="grid">
+                <div>
+                    <ul>
+                        <li><strong>Calendario visual intuitivo</strong> para selección de fechas disponibles</li>
+                        <li><strong>Formularios personalizados</strong> para cada modalidad de taller (InLove/Express)</li>
+                        <li><strong>Pago seguro integrado</strong> con pasarelas locales</li>
+                        <li><strong>Panel de administración</strong> para gestionar reservas fácilmente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h3 class="card-title">Sección de Joyas a Pedido</h3>
+                <ul>
+                    <li>Formulario detallado para capturar la visión del cliente</li>
+                    <li>Galería inspiracional de trabajos previos</li>
+                    <li>Sistema para que los clientes carguen referencias visuales</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">Narrativa de Marca</h3>
+                <ul>
+                    <li>Sección dedicada a la filosofía de Sortícula</li>
+                    <li>Espacios visuales que respeten el concepto de "la magia de los detalles"</li>
+                    <li>Elementos que refuercen la identidad artesanal de la marca</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>5. Inversión y Valor</h2>
+        
+        <table>
+            <tr>
+                <th>Fase</th>
+                <th>Duración</th>
+                <th>Entregable Principal</th>
+                <th class="text-right">Inversión</th>
+            </tr>
+            <tr>
+                <td>Fase 1: Definición y Planificación</td>
+                <td>2 semanas</td>
+                <td>Wireframes y estructura</td>
+                <td class="text-right">$1,000,000</td>
+            </tr>
+            <tr>
+                <td>Fase 2: Diseño y MVP</td>
+                <td>5 semanas</td>
+                <td>Sitio MVP funcional</td>
+                <td class="text-right">$2,500,000</td>
+            </tr>
+            <tr>
+                <td>Fase 3: Desarrollo Completo</td>
+                <td>5 semanas</td>
+                <td>Integraciones y funcionalidades</td>
+                <td class="text-right">$2,500,000</td>
+            </tr>
+            <tr>
+                <td>Fase 4: Optimización y Finalización</td>
+                <td>2 semanas</td>
+                <td>Sitio web completo optimizado</td>
+                <td class="text-right">$1,000,000</td>
+            </tr>
+            <tr class="total-row">
+                <td>TOTAL</td>
+                <td>14 semanas</td>
+                <td></td>
+                <td class="text-right">$7,000,000</td>
+            </tr>
+        </table>
+        
+        <div class="highlight">
+            <p>
+                Los pagos se realizarán al finalizar cada fase, tras la aprobación de los entregables correspondientes, 
+                lo que les permite distribuir la inversión a lo largo del proyecto.
+            </p>
+        </div>
+        
+        <h3>Costos Adicionales (cubiertos por el cliente)</h3>
+        <table>
+            <tr>
+                <td>Hosting WordPress (Hostinger, plan 4 años)</td>
+                <td class="text-right">$150 USD total (~$150,000 COP/año)</td>
+            </tr>
+            <tr>
+                <td>Tema Astra Pro</td>
+                <td class="text-right">$59/año</td>
+            </tr>
+            <tr>
+                <td>Elementor Pro</td>
+                <td class="text-right">$59/año</td>
+            </tr>
+            <tr>
+                <td>WP Rocket</td>
+                <td class="text-right">$59/año</td>
+            </tr>
+            <tr>
+                <td>Pasarela de pagos</td>
+                <td class="text-right">Comisiones variables (2.5% - 3.5% + IVA por transacción)</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>6. Soporte y Mantenimiento</h2>
+        
+        <p>
+            Para garantizar que el sitio siga funcionando óptimamente después del lanzamiento:
+        </p>
+        
+        <div class="card">
+            <h3 class="card-title">Garantía de un año</h3>
+            <ul>
+                <li>Corrección de errores relacionados con las funcionalidades desarrolladas</li>
+                <li>Soporte técnico para problemas de funcionamiento</li>
+                <li>Asistencia en caso de caídas o problemas de servidor</li>
+            </ul>
+            <p>
+                <em>Esta garantía no incluye desarrollo de nuevas funcionalidades, modificaciones en el diseño, 
+                problemas causados por terceros o actualizaciones de contenido.</em>
+            </p>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <div class="phase-header">
+                    <h3 class="phase-title">Plan básico</h3>
+                    <span class="phase-price">$150,000/mes</span>
+                </div>
+                <ul>
+                    <li>Actualizaciones regulares de WordPress, plugins y tema</li>
+                    <li>Monitoreo de seguridad y respaldos</li>
+                    <li>2 horas mensuales para ajustes menores</li>
+                </ul>
+                <p><em>Opcional: se contrata por separado tras el período de garantía</em></p>
+            </div>
+            
+            <div class="card">
+                <div class="phase-header">
+                    <h3 class="phase-title">Plan completo</h3>
+                    <span class="phase-price">$300,000/mes</span>
+                </div>
+                <ul>
+                    <li>Todo lo incluido en el plan básico</li>
+                    <li>5 horas mensuales para mejoras y ajustes</li>
+                    <li>Reporte mensual de rendimiento y tráfico</li>
+                </ul>
+                <p><em>Opcional: se contrata por separado tras el período de garantía</em></p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>7. Consideraciones Finales</h2>
+        
+        <p>
+            Lo que quiero lograr con el sitio es entregarles un activo digital valioso que:
+        </p>
+        <ul>
+            <li>Refleje fielmente la identidad y valores de la marca</li>
+            <li>Facilite la reserva de talleres, su fuente principal de ingresos</li>
+            <li>Permita un crecimiento orgánico a través del tiempo</li>
+            <li>Sea fácil de mantener y actualizar por su equipo</li>
+        </ul>
+        
+    </section>
+
+    <div class="footer">
+        <p>Propuesta presentada por: William Montoya</p>
+        <p>Fecha: 21 de marzo de 2025</p>
+        <p>Para: Sortícula - Taller de Joyería Artesanal</p>
+    </div>
+</body>
+</html>
