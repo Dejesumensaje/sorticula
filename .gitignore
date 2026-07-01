@@ -1,5 +1,10 @@
 node_modules
 
+# Sin lockfile: Vite 8/Rolldown + lightningcss usan binarios nativos por
+# plataforma y el bug npm #4828 hace que un lock generado en macOS omita los
+# de Linux. Sin lockfile, Netlify usa `npm install` (resuelve por plataforma).
+package-lock.json
+
 # Output
 .output
 .vercel
