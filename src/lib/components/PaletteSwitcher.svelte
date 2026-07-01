@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { randomize } from '$lib/state/palette.svelte';
+	import { tr } from '$lib/state/lang.svelte';
+
+	const t = $derived(tr());
 
 	let gem = $state<HTMLSpanElement>();
 
@@ -21,8 +24,8 @@
 	type="button"
 	class="gem-btn hot"
 	onclick={turn}
-	aria-label="Otra luz — cambia la paleta"
-	title="Otra luz"
+	aria-label={t.palette.aria}
+	title={t.palette.title}
 >
 	<span class="gem" bind:this={gem}>
 		<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">

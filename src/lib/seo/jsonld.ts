@@ -1,5 +1,6 @@
 import { site } from '$lib/content/site';
 import { experiences } from '$lib/content/experiences';
+import { dict } from '$lib/i18n/dict';
 
 /** JSON-LD: a LocalBusiness offering the bookable experiences as services. */
 export function localBusinessLd() {
@@ -22,8 +23,8 @@ export function localBusinessLd() {
 		areaServed: site.contact.city,
 		makesOffer: experiences.map((e) => ({
 			'@type': 'Offer',
-			name: e.title,
-			description: e.desc,
+			name: dict.es.experiences[e.id].title,
+			description: dict.es.experiences[e.id].desc,
 			priceCurrency: 'COP',
 			category: 'Taller de joyería',
 			url: `${site.url}/#reserva`

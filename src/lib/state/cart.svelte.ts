@@ -3,6 +3,7 @@
  * confirmación dentro del sitio. En Fase 2 el checkout real es handoff a Tiendanube.
  */
 import { experiences, type Experience } from '$lib/content/experiences';
+import { lang } from '$lib/state/lang.svelte';
 
 export type CartView = 'cart' | 'checkout' | 'pago' | 'done';
 
@@ -76,7 +77,7 @@ export function total(): number {
 	return lines().reduce((sum, l) => sum + l.subtotal, 0);
 }
 
-/** Formato de precio en pesos colombianos: 1500000 → "$1.500.000". */
+/** Formato de precio en COP, con separador según el idioma activo. */
 export function formatCOP(value: number): string {
-	return '$' + value.toLocaleString('es-CO');
+	return '$' + value.toLocaleString(lang.code === 'en' ? 'en-US' : 'es-CO');
 }

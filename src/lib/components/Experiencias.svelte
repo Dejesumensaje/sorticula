@@ -2,8 +2,11 @@
 	import { experiences } from '$lib/content/experiences';
 	import { selectExperience } from '$lib/state/booking.svelte';
 	import { addItem, openCart } from '$lib/state/cart.svelte';
+	import { tr, priceLabel } from '$lib/state/lang.svelte';
 	import { reveal } from '$lib/anim/reveal';
 	import PhotoSlot from './PhotoSlot.svelte';
+
+	const t = $derived(tr());
 
 	function agregar(id: string) {
 		addItem(id);
@@ -17,39 +20,37 @@
 	<div class="shell">
 		<div class="head">
 			<div>
-				<p class="eyebrow mark reveal" use:reveal>Reserva tu lugar</p>
-				<h2 class="title reveal" use:reveal={{ delay: 80 }}>Experiencias</h2>
+				<p class="eyebrow mark reveal" use:reveal>{t.experiencias.eyebrow}</p>
+				<h2 class="title reveal" use:reveal={{ delay: 80 }}>{t.experiencias.title}</h2>
 			</div>
-			<p class="intro reveal" use:reveal={{ delay: 140 }}>
-				Tres formas de entrar al taller. Cada una termina con una joya hecha por ustedes mismos —
-				elige, agrégala al carrito y reserva tu sesión.
-			</p>
+			<p class="intro reveal" use:reveal={{ delay: 140 }}>{t.experiencias.intro}</p>
 		</div>
 
 		<div class="grid">
 			{#each experiences as exp, i (exp.id)}
+				{@const c = t.experiences[exp.id]}
 				<article class="card reveal" use:reveal={{ delay: i * 90 }}>
 					<a
 						class="frame hot"
 						href="#reserva"
 						onclick={() => selectExperience(i)}
-						aria-label="Ver detalle de {exp.title}"
+						aria-label={c.title}
 					>
-						<PhotoSlot src={exp.img} label={exp.title} theme="light" imgClass="exp-img" />
+						<PhotoSlot src={exp.img} label={c.title} theme="light" imgClass="exp-img" />
 						<span class="idx">{index(i)}</span>
-						<span class="tag">{exp.tag}</span>
+						<span class="tag">{c.tag}</span>
 					</a>
 					<div class="body">
-						<div class="who">{exp.who}</div>
-						<h3>{exp.title}</h3>
-						<p>{exp.desc}</p>
+						<div class="who">{c.who}</div>
+						<h3>{c.title}</h3>
+						<p>{c.desc}</p>
 						<div class="foot">
 							<div class="pricing">
-								<span class="price">{exp.price}</span>
-								<span class="per">/ {exp.unit}</span>
+								<span class="price">{priceLabel(exp)}</span>
+								<span class="per">/ {c.unit}</span>
 							</div>
 							<button type="button" class="add hot" onclick={() => agregar(exp.id)}>
-								Agregar <span aria-hidden="true">+</span>
+								{t.experiencias.add} <span aria-hidden="true">+</span>
 							</button>
 						</div>
 					</div>

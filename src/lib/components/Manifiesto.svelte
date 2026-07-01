@@ -1,27 +1,24 @@
 <script lang="ts">
 	import { reveal } from '$lib/anim/reveal';
+	import { tr } from '$lib/state/lang.svelte';
+
+	const t = $derived(tr());
 </script>
 
 <section class="manifiesto">
 	<div class="shell grid">
 		<div>
-			<p class="eyebrow mark reveal" use:reveal>Manifiesto · 01</p>
+			<p class="eyebrow mark reveal" use:reveal>{t.manifiesto.eyebrow}</p>
 			<h2 class="headline">
-				<span class="reveal" use:reveal={{ delay: 60 }}>No creamos objetos, </span>
-				<span class="reveal mute" use:reveal={{ delay: 140 }}>materializamos el </span>
-				<span class="reveal accent" use:reveal={{ delay: 220 }}>tiempo y la memoria.</span>
+				<span class="reveal" use:reveal={{ delay: 60 }}>{t.manifiesto.h1}</span>
+				<span class="reveal mute" use:reveal={{ delay: 140 }}>{t.manifiesto.h2}</span>
+				<span class="reveal accent" use:reveal={{ delay: 220 }}>{t.manifiesto.h3}</span>
 			</h2>
 		</div>
 		<div class="body reveal" use:reveal={{ delay: 120 }}>
-			<p>
-				En Sortícula el lujo no es el brillo: es el proceso. Cada pieza nace de una conversación
-				entre el fuego y la mano, un rastro físico de un momento que merece ser eterno.
-			</p>
-			<p>
-				Trabajas el metal acompañado por joyeros expertos. Llegas con una idea; te vas con una
-				historia y con algo imposible de repetir, hecho por ti.
-			</p>
-			<p class="sign">Taller Sortícula — desde 2016</p>
+			<p>{t.manifiesto.p1}</p>
+			<p>{t.manifiesto.p2}</p>
+			<p class="sign">{t.manifiesto.sign}</p>
 		</div>
 	</div>
 </section>
@@ -57,7 +54,7 @@
 	}
 	.headline .accent {
 		font-style: italic;
-		color: var(--accent);
+		color: var(--hl);
 	}
 	.body {
 		padding-top: var(--space-2);

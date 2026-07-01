@@ -3,31 +3,32 @@
 	import { site } from '$lib/content/site';
 	import { booking } from '$lib/state/booking.svelte';
 	import { addItem, openCart } from '$lib/state/cart.svelte';
+	import { tr, priceLabel } from '$lib/state/lang.svelte';
 	import { reveal } from '$lib/anim/reveal';
 
+	const t = $derived(tr());
 	const current = $derived(experiences[booking.selected]);
+	const c = $derived(t.experiences[current.id]);
 
 	function agregar() {
 		addItem(current.id);
 		openCart();
 	}
-	const waText = $derived(
-		`Hola Sortícula, quiero reservar la experiencia "${current.title}". ¿Me cuentan disponibilidad?`
-	);
+	const waText = $derived(`${t.reserva.waPre}${c.title}${t.reserva.waPost}`);
 	const waHref = $derived(`${site.contact.whatsappUrl}?text=${encodeURIComponent(waText)}`);
 </script>
 
 <section id="reserva" class="reserva section--invert">
 	<div class="shell">
 		<div class="head">
-			<p class="eyebrow mark reveal" use:reveal>Empieza aquí</p>
+			<p class="eyebrow mark reveal" use:reveal>{t.reserva.eyebrow}</p>
 			<h2 class="title reveal" use:reveal={{ delay: 70 }}>
-				Aparta tu <span class="ital">sesión</span>
+				{t.reserva.titleLead}<span class="ital">{t.reserva.titleHl}</span>
 			</h2>
 		</div>
 
 		<div class="panel reveal" use:reveal={{ delay: 120 }}>
-			<div class="tabs" role="tablist" aria-label="Experiencias">
+			<div class="tabs" role="tablist" aria-label={t.experiencias.title}>
 				{#each experiences as exp, i (exp.id)}
 					<button
 						type="button"
@@ -37,28 +38,28 @@
 						class:active={i === booking.selected}
 						onclick={() => (booking.selected = i)}
 					>
-						{exp.title}
+						{t.experiences[exp.id].title}
 					</button>
 				{/each}
 			</div>
 
 			<div class="summary">
 				<div class="detail">
-					<div class="label">Experiencia seleccionada</div>
-					<h3 class="name">{current.title}</h3>
+					<div class="label">{t.reserva.label}</div>
+					<h3 class="name">{c.title}</h3>
 					<div class="price">
-						{current.price} <span class="per">/ {current.unit}</span>
+						{priceLabel(current)} <span class="per">/ {c.unit}</span>
 					</div>
-					<p class="desc">{current.desc}</p>
+					<p class="desc">{c.desc}</p>
 				</div>
 				<div class="actions">
 					<button type="button" class="btn primary hot" onclick={agregar}>
-						Agregar al carrito →
+						{t.reserva.add}
 					</button>
 					<a class="btn ghost hot" href={waHref} target="_blank" rel="noopener">
-						Consultar por WhatsApp
+						{t.reserva.whatsapp}
 					</a>
-					<p class="reassure">Reserva tu cupo · pago seguro en el checkout</p>
+					<p class="reassure">{t.reserva.reassure}</p>
 				</div>
 			</div>
 		</div>

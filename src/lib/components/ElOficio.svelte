@@ -5,7 +5,10 @@
 	import { ensureScrollTrigger } from '$lib/anim/smoothScroll';
 	import { prefersReducedMotion } from '$lib/anim/motion';
 	import { reveal } from '$lib/anim/reveal';
+	import { tr } from '$lib/state/lang.svelte';
 	import PhotoSlot from './PhotoSlot.svelte';
+
+	const t = $derived(tr());
 
 	let section: HTMLElement;
 	let track: HTMLDivElement;
@@ -48,28 +51,27 @@
 <section id="oficio" class="oficio section--accent" class:horizontal bind:this={section}>
 	<div class="shell head">
 		<div>
-			<p class="eyebrow mark reveal" use:reveal>Capítulos del oficio</p>
-			<h2 class="title reveal" use:reveal={{ delay: 80 }}>El <span class="ital">Oficio</span></h2>
+			<p class="eyebrow mark reveal" use:reveal>{t.oficio.eyebrow}</p>
+			<h2 class="title reveal" use:reveal={{ delay: 80 }}>
+				{t.oficio.titleLead}<span class="ital">{t.oficio.titleHl}</span>
+			</h2>
 		</div>
-		<p class="intro reveal" use:reveal={{ delay: 140 }}>
-			Cinco etapas que toda joya atraviesa antes de cruzar la puerta contigo. Sin experiencia
-			previa: te acompaña un joyero experto en cada una.
-		</p>
+		<p class="intro reveal" use:reveal={{ delay: 140 }}>{t.oficio.intro}</p>
 	</div>
 
 	<div class="viewport">
 		<div class="track" bind:this={track}>
-			{#each oficio as step (step.n)}
+			{#each oficio as step, i (step.n)}
 				<article class="card reveal" use:reveal>
 					<div class="frame">
-						<PhotoSlot src={step.img} label={step.title.toLowerCase()} theme="dark" />
+						<PhotoSlot src={step.img} label={t.oficio.steps[i].title.toLowerCase()} theme="dark" />
 					</div>
 					<div class="meta">
 						<span class="n">{step.n}</span>
-						<span class="tag">Etapa</span>
+						<span class="tag">{t.oficio.tag}</span>
 					</div>
-					<h3>{step.title}</h3>
-					<p>{step.desc}</p>
+					<h3>{t.oficio.steps[i].title}</h3>
+					<p>{t.oficio.steps[i].desc}</p>
 				</article>
 			{/each}
 		</div>

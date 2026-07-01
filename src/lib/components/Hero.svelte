@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { site } from '$lib/content/site';
+	import { tr } from '$lib/state/lang.svelte';
 	import CartButton from './CartButton.svelte';
 	import PaletteSwitcher from './PaletteSwitcher.svelte';
+	import LangSwitch from './LangSwitch.svelte';
+
+	const t = $derived(tr());
 </script>
 
 <section id="top" class="hero">
@@ -20,14 +24,15 @@
 	<header class="nav">
 		<nav class="nav-side">
 			<PaletteSwitcher />
-			<a href="#oficio" class="lnk navlink">El Oficio</a>
-			<a href="#experiencias" class="lnk navlink">Experiencias</a>
+			<LangSwitch />
+			<a href="#oficio" class="lnk navlink">{t.nav.oficio}</a>
+			<a href="#experiencias" class="lnk navlink">{t.nav.experiencias}</a>
 		</nav>
 		<a href="#top" class="brand" aria-label={site.name}>
 			<img src="/img/logo-white-trim.png" alt={site.name} width="686" height="166" />
 		</a>
 		<div class="nav-side end">
-			<a href="#reserva" class="btn cta-pill">Reservar</a>
+			<a href="#reserva" class="btn cta-pill">{t.nav.reservar}</a>
 			<CartButton tone="light" />
 		</div>
 	</header>
@@ -35,17 +40,16 @@
 	<div class="content">
 		<p class="eyebrow tagline">
 			<span class="pulse"></span>
-			Taller de joyería · Bogotá · est. MMXVI
+			{t.hero.eyebrow}
 		</p>
 		<h1 class="title">
-			El taller donde el tiempo <span class="ital">toma forma.</span>
+			{t.hero.titleLead}<span class="ital">{t.hero.titleHl}</span>
 		</h1>
 		<div class="lede-row">
 			<p class="lede">
-				No vendemos joyas. Te damos el fuego, las herramientas y las manos expertas para que
-				<strong>forjes la tuya</strong> — junto a quien tú quieras.
+				{t.hero.lede1}<strong>{t.hero.ledeStrong}</strong>{t.hero.lede2}
 			</p>
-			<a href="#experiencias" class="btn cta-solid">Reservar una experiencia →</a>
+			<a href="#experiencias" class="btn cta-solid">{t.hero.cta}</a>
 		</div>
 	</div>
 
@@ -62,7 +66,7 @@
 	</div>
 
 	<div class="cue" aria-hidden="true">
-		<span class="cue-label">Scroll</span>
+		<span class="cue-label">{t.hero.cue}</span>
 		<span class="cue-track"><span class="cue-dot"></span></span>
 	</div>
 </section>
@@ -204,7 +208,7 @@
 	}
 	.ital {
 		font-style: italic;
-		color: var(--accent);
+		color: var(--hl);
 	}
 	.lede-row {
 		display: flex;

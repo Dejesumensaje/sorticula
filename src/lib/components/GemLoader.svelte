@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { prefersReducedMotion } from '$lib/anim/motion';
+	import { tr } from '$lib/state/lang.svelte';
+
+	const t = $derived(tr());
 
 	let intro = $state<HTMLDivElement>();
 	let gone = $state(false);
@@ -46,7 +49,7 @@
 		</svg>
 	</span>
 
-	<button type="button" class="skip" onclick={dismiss}>Saltar</button>
+	<button type="button" class="skip" onclick={dismiss}>{t.loader.skip}</button>
 </div>
 
 <style>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cart, count, openCart } from '$lib/state/cart.svelte';
+	import { tr } from '$lib/state/lang.svelte';
 
 	interface Props {
 		/** 'light' = para fondos oscuros (hero); 'dark' = para fondos claros. */
@@ -7,6 +8,7 @@
 	}
 	let { tone = 'light' }: Props = $props();
 
+	const t = $derived(tr());
 	const n = $derived(count());
 </script>
 
@@ -14,7 +16,7 @@
 	type="button"
 	class="cart-btn hot {tone}"
 	onclick={openCart}
-	aria-label="Abrir carrito ({n} {n === 1 ? 'ítem' : 'ítems'})"
+	aria-label="{t.cart.openPre} ({n} {n === 1 ? t.cart.item1 : t.cart.itemN})"
 >
 	<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
 		<path

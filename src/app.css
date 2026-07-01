@@ -28,6 +28,10 @@
 	--fg-muted: color-mix(in srgb, var(--fg) 91%, var(--bg));
 	--line: color-mix(in srgb, var(--fg) 16%, transparent);
 	--line-strong: color-mix(in srgb, var(--fg) 32%, transparent);
+	/* Highlight de palabras clave sobre el fondo base. Por defecto = el acento
+	   vivo; en paletas donde el acento coincide con el texto (Fundido) se
+	   sobreescribe por una que sí contraste (ver .pal-fundido). */
+	--hl: var(--accent);
 
 	/* Alias de compatibilidad con el código existente */
 	--accent-deep: var(--accent);
@@ -105,6 +109,9 @@
 	--p-accent: #0a0603;
 	--p-accent-ink: #ff7a45;
 	--p-surface: #f4e3d2; /* crema (tarjetas) */
+	/* El acento es casi-negro (= texto), así que el highlight usa blanco cálido:
+	   sobre el naranja da ~3.6:1 → AA para texto grande (títulos). */
+	--hl: #fff3ea;
 }
 :root.pal-patina {
 	--p-bg: #0e3a33; /* verdigris */

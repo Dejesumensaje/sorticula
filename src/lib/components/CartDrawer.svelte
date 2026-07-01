@@ -10,7 +10,9 @@
 		closeCart,
 		formatCOP
 	} from '$lib/state/cart.svelte';
+	import { tr } from '$lib/state/lang.svelte';
 
+	const t = $derived(tr());
 	const items = $derived(lines());
 	const sum = $derived(total());
 	const n = $derived(count());
@@ -27,11 +29,11 @@
 	let cvc = $state('');
 	let titular = $state('');
 
-	const steps = [
-		{ id: 'checkout', n: '1', label: 'Datos' },
-		{ id: 'pago', n: '2', label: 'Pago' },
-		{ id: 'done', n: '3', label: 'Listo' }
-	] as const;
+	const steps = $derived([
+		{ id: 'checkout', n: '1', label: t.cart.steps.datos },
+		{ id: 'pago', n: '2', label: t.cart.steps.pago },
+		{ id: 'done', n: '3', label: t.cart.steps.listo }
+	]);
 	const stepIndex = $derived(steps.findIndex((s) => s.id === cart.view));
 
 	function goCheckout() {
@@ -59,12 +61,12 @@
 		if (e.key === 'Escape' && cart.open) cerrar();
 	}
 
-	const titles: Record<string, string> = {
-		cart: 'Tu carrito',
-		checkout: 'Tus datos',
-		pago: 'Pago',
-		done: 'Confirmado'
-	};
+	const titles = $derived<Record<string, string>>({
+		cart: t.cart.titles.cart,
+		checkout: t.cart.titles.checkout,
+		pago: t.cart.titles.pago,
+		done: t.cart.titles.done
+	});
 </script>
 
 <svelte:window onkeydown={onKey} />
@@ -83,12 +85,12 @@
 	class:open={cart.open}
 	role="dialog"
 	aria-modal="true"
-	aria-label="Carrito"
+	aria-label={titles[cart.view]}
 	tabindex="-1"
 >
 	<header class="bar">
 		<span class="ttl">{titles[cart.view]}</span>
-		<button type="button" class="x hot" onclick={cerrar} aria-label="Cerrar carrito">✕</button>
+		<button type="button" class="x hot" onclick={cerrar} aria-label={t.cart.close}>✕</button>
 	</header>
 
 	{#if cart.view !== 'cart'}
@@ -105,15 +107,16 @@
 	{#if cart.view === 'cart'}
 		<div class="body">
 			{#if items.length === 0}
-				<p class="empty">Tu carrito está vacío. Elige una experiencia para empezar.</p>
+				<p class="empty">{t.cart.empty}</p>
 			{:else}
 				<ul class="lines">
 					{#each items as line (line.exp.id)}
+						{@const c = t.experiences[line.exp.id]}
 						<li class="line">
 							<div class="info">
-								<p class="name">{line.exp.title}</p>
+								<p class="name">{c.title}</p>
 								<p class="unit">
-									{formatCOP(line.exp.priceValue)}{line.exp.fromPrice ? '+' : ''} / {line.exp.unit}
+									{formatCOP(line.exp.priceValue)}{line.exp.fromPrice ? '+' : ''} / {c.unit}
 								</p>
 							</div>
 							<div class="qty">
@@ -121,14 +124,14 @@
 									type="button"
 									class="step-btn hot"
 									onclick={() => setQty(line.exp.id, line.qty - 1)}
-									aria-label="Quitar uno">−</button
+									aria-label={t.cart.removeOne}>−</button
 								>
 								<span class="num">{line.qty}</span>
 								<button
 									type="button"
 									class="step-btn hot"
 									onclick={() => setQty(line.exp.id, line.qty + 1)}
-									aria-label="Agregar uno">+</button
+									aria-label={t.cart.addOne}>+</button
 								>
 							</div>
 							<div class="sub">
@@ -137,7 +140,7 @@
 									type="button"
 									class="rm hot"
 									onclick={() => removeItem(line.exp.id)}
-									aria-label="Eliminar {line.exp.title}">Quitar</button
+									aria-label="{t.cart.quitar} · {c.title}">{t.cart.quitar}</button
 								>
 							</div>
 						</li>
@@ -147,54 +150,54 @@
 		</div>
 		<footer class="foot">
 			<div class="total">
-				<span>Total</span>
+				<span>{t.cart.total}</span>
 				<span class="amount">{formatCOP(sum)}</span>
 			</div>
 			<button type="button" class="cta hot" disabled={n === 0} onclick={goCheckout}>
-				Continuar →
+				{t.cart.continue}
 			</button>
-			<p class="note">Prototipo · simulación de compra</p>
+			<p class="note">{t.cart.note}</p>
 		</footer>
 	{:else if cart.view === 'checkout'}
 		<form class="body form" onsubmit={goPago}>
 			<label>
-				<span>Nombre</span>
-				<input type="text" bind:value={nombre} required placeholder="Tu nombre" />
+				<span>{t.cart.nombre}</span>
+				<input type="text" bind:value={nombre} required placeholder={t.cart.nombrePh} />
 			</label>
 			<label>
-				<span>Email</span>
-				<input type="email" bind:value={email} required placeholder="tucorreo@ejemplo.com" />
+				<span>{t.cart.email}</span>
+				<input type="email" bind:value={email} required placeholder={t.cart.emailPh} />
 			</label>
 			<label>
-				<span>Fecha preferida</span>
+				<span>{t.cart.fecha}</span>
 				<input type="date" bind:value={fecha} required />
 			</label>
 
 			<div class="recap">
-				<span>{n} {n === 1 ? 'experiencia' : 'experiencias'}</span>
+				<span>{n} {n === 1 ? t.cart.exp1 : t.cart.expN}</span>
 				<span class="amount">{formatCOP(sum)}</span>
 			</div>
-			<button type="submit" class="cta hot">Continuar al pago →</button>
+			<button type="submit" class="cta hot">{t.cart.toPago}</button>
 			<button type="button" class="back hot" onclick={() => (cart.view = 'cart')}>
-				← Volver al carrito
+				{t.cart.backCart}
 			</button>
 		</form>
 	{:else if cart.view === 'pago'}
 		<form class="body form" onsubmit={pagar}>
-			<div class="methods" role="radiogroup" aria-label="Método de pago">
+			<div class="methods" role="radiogroup" aria-label={t.cart.titles.pago}>
 				<label class="method" class:sel={metodo === 'tarjeta'}>
 					<input type="radio" name="metodo" value="tarjeta" bind:group={metodo} />
-					Tarjeta
+					{t.cart.metodoTarjeta}
 				</label>
 				<label class="method" class:sel={metodo === 'pse'}>
 					<input type="radio" name="metodo" value="pse" bind:group={metodo} />
-					PSE
+					{t.cart.metodoPse}
 				</label>
 			</div>
 
 			{#if metodo === 'tarjeta'}
 				<label>
-					<span>Número de tarjeta</span>
+					<span>{t.cart.tarjeta}</span>
 					<input
 						type="text"
 						bind:value={tarjeta}
@@ -206,11 +209,11 @@
 				</label>
 				<div class="row">
 					<label>
-						<span>Vencimiento</span>
+						<span>{t.cart.venc}</span>
 						<input type="text" bind:value={venc} required placeholder="MM/AA" maxlength="5" />
 					</label>
 					<label>
-						<span>CVC</span>
+						<span>{t.cart.cvc}</span>
 						<input
 							type="text"
 							bind:value={cvc}
@@ -222,34 +225,31 @@
 					</label>
 				</div>
 				<label>
-					<span>Nombre en la tarjeta</span>
-					<input type="text" bind:value={titular} required placeholder="Como aparece en la tarjeta" />
+					<span>{t.cart.titular}</span>
+					<input type="text" bind:value={titular} required placeholder={t.cart.titularPh} />
 				</label>
 			{:else}
 				<p class="pse-note">
-					Serás redirigido a tu banco para completar el pago con PSE. (Simulado en el prototipo.)
+					{t.cart.pseNote}
 				</p>
 			{/if}
 
 			<div class="recap">
-				<span>Total a pagar</span>
+				<span>{t.cart.totalPagar}</span>
 				<span class="amount">{formatCOP(sum)}</span>
 			</div>
-			<button type="submit" class="cta hot">Pagar {formatCOP(sum)} →</button>
+			<button type="submit" class="cta hot">{t.cart.pagar} {formatCOP(sum)} →</button>
 			<button type="button" class="back hot" onclick={() => (cart.view = 'checkout')}>
-				← Volver
+				{t.cart.back}
 			</button>
-			<p class="note">Prototipo · no se procesa ningún pago real</p>
+			<p class="note">{t.cart.note2}</p>
 		</form>
 	{:else}
 		<div class="body done">
 			<div class="check" aria-hidden="true">✓</div>
-			<h3>Reserva confirmada</h3>
-			<p>
-				Te enviaríamos los detalles por correo. Esto es una simulación del prototipo — en producción,
-				el pago se procesa de forma segura en el checkout de Tiendanube.
-			</p>
-			<button type="button" class="cta hot" onclick={cerrar}>Seguir explorando</button>
+			<h3>{t.cart.doneTitle}</h3>
+			<p>{t.cart.doneBody}</p>
+			<button type="button" class="cta hot" onclick={cerrar}>{t.cart.doneCta}</button>
 		</div>
 	{/if}
 </div>

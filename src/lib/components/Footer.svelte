@@ -1,21 +1,24 @@
 <script lang="ts">
 	import { site } from '$lib/content/site';
+	import { tr } from '$lib/state/lang.svelte';
+
+	const t = $derived(tr());
 </script>
 
 <footer id="contacto" class="footer">
 	<div class="shell top">
 		<div class="brand">
 			<img src="/img/logo-white-trim.png" alt={site.name} width="686" height="166" />
-			<p>Casa de joyería donde el tiempo toma forma. {site.contact.address}.</p>
+			<p>{t.footer.brandDesc} {site.contact.address}.</p>
 		</div>
 		<div class="col">
-			<p class="label">Explora</p>
-			<a href="#oficio" class="lnk">El Oficio</a>
-			<a href="#experiencias" class="lnk">Experiencias</a>
-			<a href="#reserva" class="lnk">Reservar</a>
+			<p class="label">{t.footer.explora}</p>
+			<a href="#oficio" class="lnk">{t.nav.oficio}</a>
+			<a href="#experiencias" class="lnk">{t.nav.experiencias}</a>
+			<a href="#reserva" class="lnk">{t.nav.reservar}</a>
 		</div>
 		<div class="col">
-			<p class="label">Contacto</p>
+			<p class="label">{t.footer.contacto}</p>
 			<a href="mailto:{site.contact.email}" class="lnk">{site.contact.email}</a>
 			<a href={site.contact.whatsappUrl} class="lnk" target="_blank" rel="noopener">
 				{site.contact.whatsapp}
@@ -23,8 +26,8 @@
 		</div>
 	</div>
 	<div class="shell legal">
-		<span>© {new Date().getFullYear()} SORTÍCULA — Todos los derechos reservados</span>
-		<span>Hecho a mano · Bogotá</span>
+		<span>© {new Date().getFullYear()} SORTÍCULA — {t.footer.legal1}</span>
+		<span>{t.footer.legal2}</span>
 	</div>
 </footer>
 
