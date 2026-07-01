@@ -156,6 +156,7 @@
 	.brand img {
 		height: 26px;
 		width: auto;
+		max-width: none;
 	}
 	.cta-pill {
 		font-size: 12px;
@@ -305,7 +306,18 @@
 			display: none;
 		}
 		.nav {
+			flex-wrap: wrap;
+			row-gap: var(--space-4);
 			padding: var(--space-5) var(--pad);
+		}
+		.brand {
+			display: flex;
+			justify-content: center;
+			order: -1;
+			flex: 0 0 100%;
+		}
+		.brand img {
+			height: 30px;
 		}
 		.seal {
 			display: none;
