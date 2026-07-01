@@ -1,0 +1,395 @@
+/* ===========================================================================
+   Sortícula — design system: tokens, base, utilities
+   "Editorial sobrio": lienzo neutro cálido + UN acento usado con intención.
+   Tipografía: Instrument Serif (display) + Syne (UI/cuerpo/etiquetas).
+   =========================================================================== */
+
+:root {
+	/* --- Sistema de color: 5 paletas, una al azar por carga --------------
+	   Cada paleta define 5 primitivas (--p-*) en una clase .pal-* sobre <html>.
+	   Un script en app.html pone una al azar ANTES de pintar (sin parpadeo) y el
+	   randomizador la cambia. Las primitivas se mapean a roles; los tonos
+	   apagados y las líneas se derivan con color-mix, así funcionan en CUALQUIER
+	   paleta sin definir tokens extra. Default = Brasa por si el JS no corre. */
+	--p-bg: #2a0a06;
+	--p-fg: #f6eadd;
+	--p-accent: #ff5a1f;
+	--p-accent-ink: #2a0a06;
+	--p-surface: #3a130c;
+
+	--bg: var(--p-bg);
+	--fg: var(--p-fg);
+	--accent: var(--p-accent);
+	--accent-ink: var(--p-accent-ink);
+	--surface: var(--p-surface);
+	/* derivados — se recalculan solos si una sección reescribe --fg/--bg.
+	   El texto apagado mezcla fuerte hacia --fg para no perder contraste AA en
+	   las paletas claras / bloques de acento. */
+	--fg-muted: color-mix(in srgb, var(--fg) 91%, var(--bg));
+	--line: color-mix(in srgb, var(--fg) 16%, transparent);
+	--line-strong: color-mix(in srgb, var(--fg) 32%, transparent);
+
+	/* Alias de compatibilidad con el código existente */
+	--accent-deep: var(--accent);
+	--bone-warm: var(--accent-ink);
+	--on-dark: var(--fg);
+	--on-dark-muted: var(--fg-muted);
+	--text: var(--fg);
+	--text-muted: var(--fg-muted);
+	--hueso: var(--bg);
+	--hueso-2: var(--surface);
+	--bone: var(--bg);
+	--bone-60: var(--fg-muted);
+	--bone-40: var(--fg-muted);
+	--ink: var(--fg);
+	--ink-70: var(--fg-muted);
+	--ink-deep: var(--bg);
+	--tinta: var(--fg);
+	--tinta-2: var(--surface);
+	--tinta-deep: var(--bg);
+	--mute: var(--fg-muted);
+	--ember: var(--accent);
+	--ember-soft: var(--accent);
+	--coral: var(--accent);
+	--line-on-dark: var(--line);
+	--line-on-dark-strong: var(--line-strong);
+
+	/* --- Type ------------------------------------------------------------ */
+	--serif: 'Instrument Serif', Georgia, serif; /* display */
+	--sans: 'Syne', system-ui, sans-serif; /* UI · cuerpo · etiquetas */
+	--mono: 'Syne', system-ui, sans-serif; /* alias: etiquetas tracked */
+
+	--fs-display: clamp(52px, 9vw, 150px);
+	--fs-h2: clamp(38px, 6vw, 88px);
+	--fs-h3: clamp(25px, 3.4vw, 38px);
+	--fs-lg: clamp(18px, 2.1vw, 22px);
+	--fs-body: 17px;
+	--fs-sm: 15px;
+	--fs-label: 12px;
+
+	/* --- Spacing (escala 8px) -------------------------------------------- */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--space-6: 32px;
+	--space-7: 48px;
+	--space-8: 64px;
+	--space-9: 96px;
+	--space-10: 128px;
+
+	/* --- Layout ---------------------------------------------------------- */
+	--maxw: 1320px;
+	--maxw-narrow: 1080px;
+	--measure: 62ch;
+	--pad: clamp(22px, 5vw, 56px); /* margen horizontal de página */
+	--section-y: clamp(84px, 11vw, 140px); /* ritmo vertical de sección */
+	--radius: 12px;
+
+	--ease: cubic-bezier(0.7, 0, 0.2, 1);
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Las 5 paletas (mixtas: cálidas de fuego/metal + frías artsy) ------- */
+:root.pal-brasa {
+	--p-bg: #2a0a06; /* oxblood */
+	--p-fg: #f6eadd; /* bone */
+	--p-accent: #ff5a1f; /* ember */
+	--p-accent-ink: #2a0a06;
+	--p-surface: #3a130c;
+}
+:root.pal-fundido {
+	--p-bg: #ea4a17; /* naranja fundido (luminoso → más margen para texto AA) */
+	--p-fg: #0a0603; /* casi negro */
+	--p-accent: #0a0603;
+	--p-accent-ink: #ff7a45;
+	--p-surface: #f4e3d2; /* crema (tarjetas) */
+}
+:root.pal-patina {
+	--p-bg: #0e3a33; /* verdigris */
+	--p-fg: #eaf5e6;
+	--p-accent: #d9f25c; /* chartreuse */
+	--p-accent-ink: #0e3a33;
+	--p-surface: #15453c;
+}
+:root.pal-cobalto {
+	--p-bg: #1a2be0; /* cobalto eléctrico */
+	--p-fg: #eceaff;
+	--p-accent: #e8ff5a; /* lima ácida */
+	--p-accent-ink: #14131a;
+	--p-surface: #2a39e8;
+}
+:root.pal-tinta {
+	--p-bg: #141318; /* casi negro frío */
+	--p-fg: #f2efea;
+	--p-accent: #94ffe5; /* menta */
+	--p-accent-ink: #141318;
+	--p-surface: #1e1d24;
+}
+
+/* Bloques que invierten roles para el ritmo (una sección de acento, una
+   invertida). IMPORTANTE: los tokens derivados (--fg-muted, --line) y los alias
+   se DECLARAN aquí también; si no, se quedan con el valor calculado en :root
+   (las custom props se computan en el nivel donde se declaran) y el muted/línea
+   no responderían al cambio de --fg/--bg. */
+.section--accent {
+	--bg: var(--p-accent);
+	--fg: var(--p-accent-ink);
+	--accent: var(--p-bg);
+	--accent-ink: var(--p-fg);
+	--surface: color-mix(in srgb, var(--p-accent) 86%, #000);
+	--fg-muted: color-mix(in srgb, var(--fg) 91%, var(--bg));
+	--line: color-mix(in srgb, var(--fg) 16%, transparent);
+	--line-strong: color-mix(in srgb, var(--fg) 32%, transparent);
+	--accent-deep: var(--accent);
+	--bone-warm: var(--accent-ink);
+	--on-dark: var(--fg);
+	--on-dark-muted: var(--fg-muted);
+	--text: var(--fg);
+	--text-muted: var(--fg-muted);
+	--hueso: var(--bg);
+	--hueso-2: var(--surface);
+	--bone: var(--bg);
+	--bone-60: var(--fg-muted);
+	--bone-40: var(--fg-muted);
+	--ink: var(--fg);
+	--ink-70: var(--fg-muted);
+	--tinta: var(--fg);
+	--tinta-2: var(--surface);
+	--mute: var(--fg-muted);
+	--ember: var(--accent);
+	--coral: var(--accent);
+	--line-on-dark: var(--line);
+	--line-on-dark-strong: var(--line-strong);
+}
+.section--invert {
+	--bg: var(--p-fg);
+	--fg: var(--p-bg);
+	/* En el bloque invertido el fondo es claro: el acento brillante (lima/menta)
+	   no contrastaría, así que el acento pasa a ser el color base (--p-bg), que
+	   por diseño SIEMPRE contrasta con --p-fg. */
+	--accent: var(--p-bg);
+	--accent-ink: var(--p-fg);
+	--surface: color-mix(in srgb, var(--p-fg) 92%, var(--p-bg));
+	--fg-muted: color-mix(in srgb, var(--fg) 91%, var(--bg));
+	--line: color-mix(in srgb, var(--fg) 16%, transparent);
+	--line-strong: color-mix(in srgb, var(--fg) 32%, transparent);
+	--accent-deep: var(--accent);
+	--bone-warm: var(--accent-ink);
+	--on-dark: var(--fg);
+	--on-dark-muted: var(--fg-muted);
+	--text: var(--fg);
+	--text-muted: var(--fg-muted);
+	--hueso: var(--bg);
+	--hueso-2: var(--surface);
+	--bone: var(--bg);
+	--bone-60: var(--fg-muted);
+	--bone-40: var(--fg-muted);
+	--ink: var(--fg);
+	--ink-70: var(--fg-muted);
+	--tinta: var(--fg);
+	--tinta-2: var(--surface);
+	--mute: var(--fg-muted);
+	--ember: var(--accent);
+	--coral: var(--accent);
+	--line-on-dark: var(--line);
+	--line-on-dark-strong: var(--line-strong);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+html.lenis,
+html.lenis body {
+	height: auto;
+}
+.lenis.lenis-smooth {
+	scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+	overflow: hidden;
+}
+
+body {
+	margin: 0;
+	background: var(--hueso);
+	color: var(--text);
+	font-family: var(--sans);
+	font-size: var(--fs-body);
+	line-height: 1.6;
+	font-weight: 500;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	overflow-x: hidden;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+a {
+	color: inherit;
+}
+
+h1,
+h2,
+h3 {
+	font-weight: 400;
+	margin: 0;
+	letter-spacing: -0.01em;
+}
+
+/* Accent focus ring for keyboard users */
+:where(a, button, input, [tabindex]):focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
+@media (pointer: fine) {
+	body.has-cursor,
+	body.has-cursor * {
+		cursor: none;
+	}
+}
+
+/* --------------------------- keyframes --------------------------- */
+@keyframes kenburns {
+	from {
+		transform: scale(1.06);
+	}
+	to {
+		transform: scale(1.16);
+	}
+}
+@keyframes spin {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+@keyframes scrollcue {
+	0% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+	70% {
+		transform: translateY(16px);
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+/* --------------------------- utilities --------------------------- */
+.shell {
+	max-width: var(--maxw);
+	margin: 0 auto;
+}
+
+/* Etiqueta / eyebrow — Syne tracked uppercase (sustituye al mono) */
+.eyebrow {
+	font-family: var(--sans);
+	font-size: var(--fs-label);
+	font-weight: 600;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	margin: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-3);
+}
+/* Marca de acento antes de una eyebrow: una línea corta vermellón */
+.eyebrow.mark::before {
+	content: '';
+	width: 22px;
+	height: 2px;
+	background: var(--accent);
+	display: inline-block;
+}
+
+.lnk {
+	position: relative;
+	text-decoration: none;
+}
+.lnk::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -3px;
+	width: 100%;
+	height: 1.5px;
+	background: currentColor;
+	transform: scaleX(0);
+	transform-origin: right;
+	transition: transform 0.4s var(--ease);
+}
+.lnk:hover::after {
+	transform: scaleX(1);
+	transform-origin: left;
+}
+
+.btn {
+	transition:
+		transform 0.35s var(--ease),
+		background 0.3s,
+		color 0.3s,
+		border-color 0.3s;
+}
+.btn:hover {
+	transform: translateY(-3px);
+}
+
+/* Reveal primitives */
+.reveal {
+	opacity: 0;
+	transform: translateY(28px);
+	transition:
+		opacity 0.8s var(--ease-out),
+		transform 0.8s var(--ease-out);
+	will-change: transform, opacity;
+}
+.reveal.is-in {
+	opacity: 1;
+	transform: none;
+}
+.no-js .reveal {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.001ms !important;
+		scroll-behavior: auto !important;
+	}
+	.reveal {
+		opacity: 1 !important;
+		transform: none !important;
+	}
+}
