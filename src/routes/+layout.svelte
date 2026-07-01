@@ -5,6 +5,7 @@
 	import { initSmoothScroll } from '$lib/anim/smoothScroll';
 	import { initPalette } from '$lib/state/palette.svelte';
 	import Cursor from '$lib/components/Cursor.svelte';
+	import GemLoader from '$lib/components/GemLoader.svelte';
 
 	let { children } = $props();
 
@@ -21,6 +22,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
+<GemLoader />
 <Cursor />
 
 {@render children()}
